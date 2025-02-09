@@ -1,13 +1,23 @@
 
 var text = "";
 async function onLoad() {
-    console.log(prompt)
-    console.log(typeof(prompt))
+    
+    var name = document.getElementById("username").value;
+    var key = document.getElementById("openaikey").value;
+    console.log(name)
+    console.log(key)
 
     try {
+
+        data = {
+            name: name,
+            key: key
+        }
+
         const response = await fetch("http://127.0.0.1:8000/onLoad/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
         });
 
         if (!response.ok) {
@@ -21,7 +31,6 @@ async function onLoad() {
     } catch (error) {
         console.error("Error fetching response:", error);
     }
-
 }
 
 function updateText(t) {
@@ -95,27 +104,27 @@ function clean_prompt_for_sd(p) {
     return extracted_prompt;
 }
 
-async function onLoad() {
-    console.log("onLoad function executed");
+// async function onLoad() {
+//     console.log("onLoad function executed");
 
-    try {
-        const response = await fetch("http://127.0.0.1:8000/onLoad/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-        });
+//     try {
+//         const response = await fetch("http://127.0.0.1:8000/onLoad/", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//         });
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch response from server");
-        }
+//         if (!response.ok) {
+//             throw new Error("Failed to fetch response from server");
+//         }
 
-        const reply = await response.text();
-        updateText(reply);
+//         const reply = await response.text();
+//         updateText(reply);
 
-        sessionStorage.setItem("onLoadExecuted", "true");
-    } catch (error) {
-        console.error("Error fetching response:", error);
-    }
-}
+//         sessionStorage.setItem("onLoadExecuted", "true");
+//     } catch (error) {
+//         console.error("Error fetching response:", error);
+//     }
+// }
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM fully loaded");
@@ -125,16 +134,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const buttonBackground = document.querySelector(".buttonbackground");
     const download = document.getElementById("downloadButton");
 
+    // if (!sessionStorage.getItem("onLoadExecuted")) {
+    //     const popupForm = document.querySelector("popupForm");
+    //     if (popupForm) {
+    //         popupForm.addEventListener("submitPopup", onload);
+    //     }
+    
+    // }
 
-    if (!sessionStorage.getItem("onLoadExecuted")) {
-        onLoad();
-    }
-
-    // ✅ Attach event listener for form submission
     const form = document.querySelector("form");
     if (form) {
         form.addEventListener("submit", submitForm);
     }
+
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupSubmit = document.getElementById("popupSubmit");
+
+    popupOverlay.classList.add("active");
+
+    popupSubmit.addEventListener("click", function (e) {
+        e.preventDefault()
+        onLoad()
+        popupOverlay.classList.remove("active");
+        console.log("popupOverlay hidden")
+    });
+
 
     toggleButton.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -156,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     textbox.addEventListener("click", (event) => {
         event.stopPropagation();
     });
+
 });
 
 

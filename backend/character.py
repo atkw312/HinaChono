@@ -1,22 +1,31 @@
 from openai import OpenAI
-from prompt import p
 
-try:
-    from mykey import OPENAI_KEY
-    print("🔑 Using OPENAI_KEY from mykey.py")
-except ImportError:
-    from keys import OPENAI_KEY
-    print("🔑 Using OPENAI_KEY from keys.py (fallback)")
+# try:
+#     from mykey import OPENAI_KEY
+#     print("🔑 Using OPENAI_KEY from mykey.py")
+# except ImportError:
+#     from keys import OPENAI_KEY
+#     print("🔑 Using OPENAI_KEY from keys.py (fallback)")
 
 chat_history = []
+OPENAI_KEY = ""
 
-client = OpenAI(
-  organization='org-8mp3GqL065se45HMQDqJwI5q',
-  project='proj_1a4a7U3ioBOQSsmXTu7WWIIR',
-  api_key=OPENAI_KEY
-)
+client = None
 
-prompt = p
+
+def set_key(k):
+    global OPENAI_KEY, client  # Access global variables
+    if k and isinstance(k, str) and k.strip():  # Ensure the key is valid (non-empty string)
+        OPENAI_KEY = k  # Update key
+        client = OpenAI(
+            organization='org-8mp3GqL065se45HMQDqJwI5q',
+            project='proj_1a4a7U3ioBOQSsmXTu7WWIIR',
+            api_key=OPENAI_KEY
+        )
+        print("✅ OpenAI key updated successfully.")
+    else:
+        print("⚠️ Invalid OpenAI key. Key was not updated.")
+  
 
 async def generate_chat(prompt: str):
   stream = client.chat.completions.create(
@@ -34,7 +43,3 @@ async def generate_chat(prompt: str):
 
   return full_response
 
-
-rp = generate_chat(prompt)
-print(rp)
-print(chat_history)

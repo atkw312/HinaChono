@@ -4,7 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from character import generate_chat
 from sdpipeline import generate_image
-from prompt import p
+from prompt import get_gpt_prompt
+from character import set_key
 from io import BytesIO
 import os
 import time
@@ -20,24 +21,36 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
+p_template = ""
+# key = ""
+ 
 class Params(BaseModel):
     reply: str
 
 class ImageParams(BaseModel):
     prompt: str
 
+class LoadParams(BaseModel):
+    name: str
+    key: str
+
 @app.get("/")
 def root():
     return {'fastapi api'}
 
 @app.post("/onLoad/")
-async def onLoad():
-    reply = await generate_chat(prompt=p)
+async def onLoad(params: LoadParams):
+    global p_template
+    p_template = get_gpt_prompt(params.name)
+    set_key(params.key)
+    reply = await generate_chat(prompt=p_template)
     return Response(content=reply, media_type="text/plain")
 
 @app.post("/generate_response/")
 async def get_text(params: Params):
-    prompt = p + ' ' + params.reply
+    global p_template
+
+    prompt = p_template + ' ' + params.reply
     reply = await generate_chat(prompt)
     return Response(content=reply, media_type="text/plain")
 
