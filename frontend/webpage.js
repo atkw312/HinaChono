@@ -4,12 +4,19 @@ var currImageUrl;
 async function onLoad() {
     
     var name = document.getElementById("username").value;
+    var proj = document.getElementById("proj").value;
+    var org = document.getElementById("org").value;
+    var key = document.getElementById("openaikey").value;
+
     console.log(name)
 
     try {
 
         data = {
             name: name,
+            proj: proj,
+            org: org,
+            key: key,
         }
 
         const response = await fetch("http://127.0.0.1:8080/onLoad/", {

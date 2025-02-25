@@ -1,25 +1,11 @@
 from openai import OpenAI
-from dotenv import load_dotenv
-import os
 
-load_dotenv() 
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_ORG_ID = os.getenv("OPENAI_ORG_ID")
-OPENAI_PROJECT_ID = os.getenv("OPENAI_PROJECT_ID")
-print(OPENAI_API_KEY, OPENAI_ORG_ID, OPENAI_PROJECT_ID) 
-
-client = None
-
-def initialize_fastapi():
+def initialize_fastapi(proj, org, key):
     global client
-    if not OPENAI_API_KEY:
-       raise ValueError("missing openai api key")
-
     client = OpenAI(
-        organization=OPENAI_ORG_ID,
-        project=OPENAI_PROJECT_ID,
-        api_key=OPENAI_API_KEY
+        organization=org,
+        project=proj,
+        api_key=key
     )
   
 

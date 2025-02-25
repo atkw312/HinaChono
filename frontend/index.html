@@ -3,14 +3,20 @@
     <head>
         <title>Hina Chono</title>
         <link href="./styles.css" rel="stylesheet">
-        <script src="./webpage.js"></script>
+        <script src="./prodweb.js"></script>
     </head>
     <body>
         <div class="canvas">
             <div id="popupOverlay">
                 <div id="popupForm">
-                    <h2>Enter Your Name</h2>
+                    <h2>Enter Your Information</h2>
                     <input type="text" id="username" placeholder="Name" required>
+                    <br><br>
+                    <input type="text" id="proj" placeholder="Project ID" required>
+                    <br><br>
+                    <input type="text" id="org" placeholder="Organization ID" required>
+                    <br><br>
+                    <input type="text" id="openaikey" placeholder="OpenAI Key" required>
                     <br><br>
                     <input type="submit" value="send" id="popupSubmit">
                 </div>
@@ -23,7 +29,6 @@
                 <button id="toggleButton"><img id="visibility" class="visibility" src="./images/visibility-off-3.svg"></button>
             </div>
             <div class="textbox" id="textbox">
-                <p class="text" id="hinaText"></p>
                 <div class="bottomline">
                     <form id="chatForm" class="formbox" >
                         <label for="chat" class="text-input">You: <input id="reply" name="reply" type="text" required /></label>

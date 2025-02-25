@@ -29,6 +29,9 @@ class ImageParams(BaseModel):
 
 class LoadParams(BaseModel):
     name: str
+    proj: str
+    org: str
+    key: str
 
 @app.get("/")
 def root():
@@ -37,7 +40,7 @@ def root():
 @app.post("/onLoad/")
 async def onLoad(params: LoadParams):
     global p_template
-    initialize_fastapi()
+    initialize_fastapi(params.proj, params.org, params.key)
     p_template = get_gpt_prompt(params.name)
     reply = await generate_chat(prompt=p_template)
     return Response(content=reply, media_type="text/plain")
