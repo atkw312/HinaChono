@@ -6,7 +6,7 @@ sleep 2
 
 echo "Starting frontend server..."
 cd ../frontend
-python -m http.server 5500 &
+serve -s . -l 5500 &
 
 echo "Service is running. Open http://127.0.0.1:5500 in your browser."
 wait
