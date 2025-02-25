@@ -7,5 +7,9 @@ This project provides a FastAPI backend for generating images using the Stable D
 ### Backend
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/your-project.git
-   cd your-project/backend
+   git clone https://github.com/atkw312/HinaChono.git
+   cd HinaChono
+
+   pip install -r requirements.txt
+
+   ./start.sh
