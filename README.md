@@ -10,10 +10,15 @@ This project provides a FastAPI backend for generating images using the Stable D
    git clone https://github.com/atkw312/HinaChono.git
    cd HinaChono
 
+2. Start backend server:
    cd backend
    pip install -r requirements.txt
    python -m uvicorn api:app --reload
    
-   cd ../frontend
+### Frontend
+1. Start frontend server:
+   cd HinaChono
+   cd frontend
+
    npm install -g serve
    serve -s . -l 5500
