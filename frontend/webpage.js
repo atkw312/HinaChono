@@ -1,20 +1,18 @@
 
 var text = "";
+var currImageUrl;
 async function onLoad() {
     
     var name = document.getElementById("username").value;
-    var key = document.getElementById("openaikey").value;
     console.log(name)
-    console.log(key)
 
     try {
 
         data = {
             name: name,
-            key: key
         }
 
-        const response = await fetch("http://127.0.0.1:8000/onLoad/", {
+        const response = await fetch("http://127.0.0.1:8080/onLoad/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -34,8 +32,13 @@ async function onLoad() {
 }
 
 function updateText(t) {
-    text = t
+    const extractedText = t.split("*")[0].trim();
+    text = extractedText;
     document.getElementById('hinaText').textContent=text;
+}
+
+function setCurrentUrlImage(imgUrl) {
+    currImageUrl = imgUrl;
 }
 
 function updateImage(imgUrl){
@@ -53,14 +56,12 @@ async function submitForm(e) {
     e.preventDefault();
 
     var prompt = document.getElementById("reply").value;
-    console.log(prompt)
-    console.log(typeof(prompt))
     const data = {
         reply: prompt
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/generate_response/", {
+        const response = await fetch("http://127.0.0.1:8080/generate_response/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -71,11 +72,9 @@ async function submitForm(e) {
         }
 
         const reply = await response.text();
-        console.log("reply: "+ reply)
         const res = clean_prompt_for_sd(reply)
-        console.log("res:" + res)
 
-        const resp = await fetch("http://127.0.0.1:8000/generate_image/", {
+        const resp = await fetch("http://127.0.0.1:8080/generate_image/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: res }),
@@ -88,6 +87,7 @@ async function submitForm(e) {
         const imageBlob = await resp.blob();
         const imageObjectURL = URL.createObjectURL(imageBlob);    
         
+        setCurrentUrlImage(imageObjectURL);
         updateImage(imageObjectURL);
         updateText(reply);
 
@@ -104,27 +104,6 @@ function clean_prompt_for_sd(p) {
     return extracted_prompt;
 }
 
-// async function onLoad() {
-//     console.log("onLoad function executed");
-
-//     try {
-//         const response = await fetch("http://127.0.0.1:8000/onLoad/", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//         });
-
-//         if (!response.ok) {
-//             throw new Error("Failed to fetch response from server");
-//         }
-
-//         const reply = await response.text();
-//         updateText(reply);
-
-//         sessionStorage.setItem("onLoadExecuted", "true");
-//     } catch (error) {
-//         console.error("Error fetching response:", error);
-//     }
-// }
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM fully loaded");
@@ -133,14 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const textbox = document.getElementById("textbox");
     const buttonBackground = document.querySelector(".buttonbackground");
     const download = document.getElementById("downloadButton");
-
-    // if (!sessionStorage.getItem("onLoadExecuted")) {
-    //     const popupForm = document.querySelector("popupForm");
-    //     if (popupForm) {
-    //         popupForm.addEventListener("submitPopup", onload);
-    //     }
-    
-    // }
 
     const form = document.querySelector("form");
     if (form) {
@@ -159,6 +130,15 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("popupOverlay hidden")
     });
 
+    document.getElementById("downloadButton").onclick = () => {
+        const link = document.createElement("a");
+        link.href = currImageUrl;
+        link.download = "generated_image.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(imageObjectURL);
+    };
 
     toggleButton.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -182,11 +162,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     // if (!sessionStorage.getItem("onLoadExecuted")) {
-//     //     onLoad(); 
-//     // }
-//     document.querySelector("form").addEventListener("submit", submitForm);
-// });

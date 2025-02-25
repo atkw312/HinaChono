@@ -6,12 +6,8 @@ from diffusers import (
     DPMSolverMultistepScheduler
 )
 from PIL import Image
-from io import BytesIO
 from safetensors.torch import load_file
-import asyncio
 from compel import Compel, ReturnedEmbeddingsType
-import os
-import time
 from expressions import exp
 
 
@@ -25,6 +21,20 @@ modelID = "./models/waiNSFWIllustrious_v80.safetensors"
 
 expressions = exp
 
+pipe = StableDiffusionXLPipeline.from_single_file(
+    modelID, 
+    vae=vae,
+    torch_dtype=torch.float16, 
+    use_safetensors=True,
+    clip_skip=2,
+)
+
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+pipe.to('cuda')
+pipe.load_lora_weights(lora_filename)
+pipe.fuse_lora(lora_scale=0.8)
+pipe.load_textual_inversion("./models/easynegative.safetensors", token="EasyNegative") #TODO check this later
+
 async def generate_image(p: str) -> Image:
 
     opener = 'masterpiece,best quality,amazing quality, chono hina, pink hair, pink eyes, hair bun, 1girl, solo, '
@@ -36,21 +46,6 @@ async def generate_image(p: str) -> Image:
     guidance_scale = 5
     inference_steps = 20
 
-    pipe = StableDiffusionXLPipeline.from_single_file(
-        modelID, 
-        vae=vae,
-        torch_dtype=torch.float16, 
-        use_safetensors=True,
-        clip_skip=2,
-    )
-
-    pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
-    pipe.to('cuda')
-    pipe.load_lora_weights(lora_filename)
-    # pipe.load_lora_weights(lora_filename_2)
-    pipe.fuse_lora(lora_scale=0.8)
-    # pipe.fuse_lora(lora_scale=0.6)
-    pipe.load_textual_inversion("./models/easynegative.safetensors", token="EasyNegative") #TODO check this later
 
     compel = Compel(
         tokenizer=[pipe.tokenizer, pipe.tokenizer_2] ,
@@ -70,8 +65,6 @@ async def generate_image(p: str) -> Image:
         guidance_scale=guidance_scale,
         num_inference_steps=inference_steps
     ).images[0]
-
-    pipe.unfuse_lora()
 
     return image
 
