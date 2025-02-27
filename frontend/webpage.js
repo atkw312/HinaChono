@@ -8,8 +8,6 @@ async function onLoad() {
     var org = document.getElementById("org").value;
     var key = document.getElementById("openaikey").value;
 
-    console.log(name)
-
     try {
 
         data = {
@@ -50,8 +48,6 @@ function setCurrentUrlImage(imgUrl) {
 
 function updateImage(imgUrl){
     const imageElement = document.getElementById('background_img');
-    console.log("Updating image source to:", imgUrl);
-
     if (imageElement) {
         imageElement.src = imgUrl;
     } else {
@@ -106,15 +102,12 @@ async function submitForm(e) {
 
 function clean_prompt_for_sd(p) {
     const match = p.match(/\*(.*?)\*/);
-    console.log("match: " + match)
     const extracted_prompt = match[1].trim();
     return extracted_prompt;
 }
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM fully loaded");
-
     const toggleButton = document.getElementById("toggleButton");
     const textbox = document.getElementById("textbox");
     const buttonBackground = document.querySelector(".buttonbackground");
@@ -134,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault()
         onLoad()
         popupOverlay.classList.remove("active");
-        console.log("popupOverlay hidden")
     });
 
     document.getElementById("downloadButton").onclick = () => {

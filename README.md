@@ -99,6 +99,5 @@ Be sure to name the folder 'models' after downloading from Google Drive.
    npm install -g serve
    serve -s . -l 5500
 
-
 ## Hina Pic
 ![Hina Chono Preview](./frontend/images/happy.png)
