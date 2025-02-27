@@ -41,7 +41,6 @@ async def generate_image(p: str) -> Image:
     outfit = 'school uniform, blue blazer, red ribbon, jacket, white shirt, shirt, ribbon, neck ribbon, '
     location = 'classroom, '
     prompt = opener + outfit + location + exp[p]
-    print(prompt)
     negative_prompt = "bad quality,worst quality,worst detail,sketch,censor, simple background,transparent background, EasyNegative"
     guidance_scale = 5
     inference_steps = 20
