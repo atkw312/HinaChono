@@ -37,27 +37,27 @@ Since Stable Diffusion XL (SDXL) models require significant computing power, ens
 	<tbody>
 		<tr>
 			<td>Model Name</td>
-         <td>User</td>
-         <td>Model Type</td>
+			<td>User</td>
+			<td>Model Type</td>
 			<td>CivitAI Link</td>
 		</tr>
 		<tr>
 			<td>WAI-NSFW-illustrious-SDXL</td>
-			<td>[WAI0731](https://civitai.com/user/WAI0731)</td>
-         <td>SDXL Model</td>
-         <td>[Link](https://civitai.com/models/827184/wai-nsfw-illustrious-sdxl?modelVersionId=1183765)</td>
+			<td><a href="https://civitai.com/user/WAI0731">WAI0731</a></td>
+			<td>SDXL Model</td>
+			<td><a href="https://civitai.com/models/827184/wai-nsfw-illustrious-sdxl?modelVersionId=1183765">Link</a></td>
 		</tr>
       		<tr>
 			<td>Chono Hina | Blue Box | アオのハコ</td>
-			<td>[duongve13112002](https://civitai.com/user/duongve13112002)</td>
-         <td>LORA</td>
-         <td>[Link](https://civitai.com/models/975032/chono-hina-or-blue-box-or)</td>
+			<td><a href="https://civitai.com/user/duongve13112002">duongve13112002</a></td>
+			<td>LORA</td>
+			<td><a href="https://civitai.com/models/975032/chono-hina-or-blue-box-or">Link</a></td>
 		</tr>
       <tr>
 			<td>EasyNegative</td>
-			<td>[rqdwdw](https://civitai.com/user/rqdwdw)</td>
-         <td>Embedding</td>
-         <td>[Link](https://civitai.com/models/7808/easynegative?modelVersionId=9208)</td>
+			<td><a href="https://civitai.com/user/rqdwdw">rqdwdw</a></td>
+			<td>Embedding</td>
+			<td><a href="https://civitai.com/models/7808/easynegative?modelVersionId=9208">Link</a></td>
 		</tr>
 	</tbody>
 </table>
