@@ -9,7 +9,8 @@ Since the model files are too large for GitHub, you need to download them manual
 
 1. **Download the models from Google Drive:**  
    [Google Drive Link](https://drive.google.com/drive/folders/17FU6A4sHU6uFlaOU6X1hiZMSibybHChi?usp=sharing)
-   
+
+Be sure to name the folder 'models' after downloading from Google Drive.
 
 ### Backend
 1. Clone the repository:
